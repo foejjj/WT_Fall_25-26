@@ -109,5 +109,61 @@
 
             <div id="activityList"></div>
         </div>
-        
+
+        <script>
+            function registerUser(){
+                var name = document.getElementById('fullname').value.trim();
+                var email = document.getElementById('email').value.trim();
+                var phone = document.getElementById('phone').value.trim();
+                var pass = document.getElementById('password').value;
+                var confirm = document.getElementById('confirmPassword').value;
+
+                var errorDiv = document.getElementById('error');
+                var successDiv = document.getElementById('success');
+
+                errorDiv.innerHTML = '';
+                successDiv.innerHTML = '';
+
+                if(name === '' || email === '' || phone === '' || pass === '' || confirm === ''){
+                    errorDiv.innerHTML = 'Please fill in all fields.';
+                    return false;
+                }
+
+                if(!email.includes('@')){
+                    errorDiv.innerHTML = 'Please enter a valid email address.';
+                    return false;
+                }
+
+                if(!/^\[0-9]+$/.test(phone)){
+                    errorDiv.innerHTML = 'Phone number must contain digits only.';
+                    return false;
+                }
+
+                if(pass !== confirm){
+                    errorDiv.innerHTML = 'Passwords do not match.';
+                    return false;
+                }
+
+                successDiv.innerHTML = <strong>'Registration successful!';</strong><br><br>
+                Name:${name}<br>
+                Email:${email}<br>
+                Phone:${phone};
+                return false;
+            }    
+            function addActivity(){
+                var activityName = document.getElementById('activityName').value.trim();
+                if(activityName === '')return;
+                
+                var list = document.getElementById("activityList");
+
+                var div = document.createElement("div");
+                div.className = "activity-item";
+
+                div.innerHTML = ${activity}<button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>;
+                list.appendChild(div);
+
+                document.getElementById('activityName').value = "";
+            }
+        </script>
+    </body>
 </html>
