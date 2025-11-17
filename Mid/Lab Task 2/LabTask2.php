@@ -134,7 +134,7 @@
                     return false;
                 }
 
-                if(!/^\[0-9]+$/.test(phone)){
+                if(!/^[0-9]+$/.test(phone)){
                     errorDiv.innerHTML = 'Phone number must contain digits only.';
                     return false;
                 }
@@ -144,10 +144,10 @@
                     return false;
                 }
 
-                successDiv.innerHTML = <strong>'Registration successful!';</strong><br><br>
+                successDiv.innerHTML = `<strong>'Registration successful!';</strong><br><br>
                 Name:${name}<br>
                 Email:${email}<br>
-                Phone:${phone};
+                Phone:${phone}`;
                 return false;
             }    
             function addActivity(){
@@ -159,7 +159,7 @@
                 var div = document.createElement("div");
                 div.className = "activity-item";
 
-                div.innerHTML = ${activity}<button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>;
+                div.innerHTML = `${activity}<button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>`;
                 list.appendChild(div);
 
                 document.getElementById('activityName').value = "";
