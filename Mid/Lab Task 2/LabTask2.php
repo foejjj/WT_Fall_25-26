@@ -16,7 +16,7 @@
                 background-color: #ffffff;
                 padding: 20px;
                 border-radius: 10px;
-                width: 350px;
+                width: 400px;
                 margin: 0 auto;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 margin-bottom: 20px;               
@@ -24,8 +24,8 @@
 
             input, button{
                 width: 100%;
-                padding: 8px;
-                margin: 10px;
+                padding: 10px;
+                margin: 8px 0;
                 border-radius: 5px;
                 border: 1px solid #ccc;
             }
@@ -159,7 +159,7 @@
                 var div = document.createElement("div");
                 div.className = "activity-item";
 
-                div.innerHTML = `${activity}<button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>`;
+                div.innerHTML = `${activityName}<button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>`;
                 list.appendChild(div);
 
                 document.getElementById('activityName').value = "";
