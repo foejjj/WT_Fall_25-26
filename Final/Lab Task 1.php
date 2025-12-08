@@ -12,5 +12,4 @@ $pizzaChoice = 2;
 
 switch($pizzaChoice){
     case 1:
-        $pizzaType = "Margherita"
-}
+    
