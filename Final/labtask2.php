@@ -3,7 +3,7 @@
 <head><title>PHP Code</title></head>
  
 <body>
-    <h1>Labtask3</h1>
+    <h1>Labtask2</h1>
  
     <?php
     $name = "";
