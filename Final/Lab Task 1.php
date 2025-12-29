@@ -11,4 +11,23 @@ echo "3. Veggie Supreme ($15) <br>";
 $pizzaChoice = 2;
 
 switch($pizzaChoice){
-    case 1:
+    case 1;
+        $totalPrice += 5;
+        break;
+    case 2;
+        $totalPrice += 10;
+        break;
+    case 3;
+        $totalPrice += 15;
+        break;
+        case 4;
+        $totalPrice += 
+        
+    ;
+    break;
+
+}
+default:
+    echo "Invalid pizza choice. <br>";
+    break;
+}
