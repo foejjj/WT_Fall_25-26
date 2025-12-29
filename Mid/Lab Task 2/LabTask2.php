@@ -1,3 +1,28 @@
+<?php
+include 'db.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fullname = $_POST['fullname']; 
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $password = $_POST['password'];
+
+    if(empty($fullname) || empty($email) || empty($phone) || empty($password)) {
+        echo "All fields are required.";
+    }
+    else{
+        $hassPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO participants (fullname, email, phone, password) VALUES ('$fullname', '$email', '$phone', '$hassPassword')";
+        if($conn->query($sql)) {
+            $success = "Registration successful!";
+        }
+        else{
+            $error = "Error: " . $conn->error;
+    }
+}
+}
+?>
+
+
 <!DOCTYPE html>
 <html>
     <head>
