@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullname = $_POST['fullname']; 
     $email = $_POST['email'];

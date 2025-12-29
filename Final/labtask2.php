@@ -1,93 +1,194 @@
+<?php
+include 'db.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fullname = $_POST['fullname']; 
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $password = $_POST['password'];
+
+    if(empty($fullname) || empty($email) || empty($phone) || empty($password)) {
+        echo "All fields are required.";
+    }
+    else{
+        $hassPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO participants (fullname, email, phone, password) VALUES ('$fullname', '$email', '$phone', '$hassPassword')";
+        if($conn->query($sql)) {
+            $success = "Registration successful!";
+        }
+        else{
+            $error = "Error: " . $conn->error;
+    }
+}
+}
+?>
+
+
 <!DOCTYPE html>
 <html>
-<head><title>PHP Code</title></head>
- 
-<body>
-    <h1>Labtask2</h1>
- 
-    <?php
-    $name = "";
-    $nameerror = "";
-    $email = "";
-    $emailerror = "";
-    $day=$month=$year="";
-    $doberror = "";
-    $gendererror = "";
-    $hobbyerror = "";
-    $degreeerror = "";
-    $bloodgrouperror = "";
- 
-    if (empty ($_POST["name"]))
-{
-$nameerror="Name is req"; 
-}
-else{
-$name= test_input($_POST["name"]); 
-if (!preg_match("/^[a-zA-Z ]*$/",$name))  
-{
-    $nameerror ="Only letters and white space allowed";
-}
-}
- 
-if (empty($_POST["email"]))
-{
-    $emailerror="Email is req";
-}
-else{
-    $email=test_input($_POST["email"]);
-    if (!filter_var($email,FILTER_VALIDATE_EMAIL))
-    {
-        $emailerror="Invalid email format";
-    }
-}
- 
-if (empty($_POST["day"]) || empty($_POST["month"]) || empty($_POST["year"]))
-{
-    $doberror="Date of birth is req";
-}
-else{
-    $day=test_input($_POST["day"]);
-    $month=test_input($_POST["month"]);
-    $year=test_input($_POST["year"]);
-}
-if (empty($_POST["gender"]))
-{
-    $gendererror="Gender is req";
-}
-else{
-    $gender = test_input($_POST["gender"]);
-    if ($gender != "Male" && $gender != "   Female" && $gender != "Other")
-    {
-        $gendererror = "Invalid gender selection";
-    }
-}
- 
-if (empty($_POST["hobby"]))
-{
-    $hobbyerror="Hobby is req";
-}
-else{
-    $hobby=test_input($_POST["hobby"]);
-}
- 
-if (empty($_POST["degree"]))
-{
-    $degreeerror="Degree is req";
-}
-else{
-    $degree=test_input($_POST["degree"]);
-}
- 
-if (empty($_POST["bloodgroup"]))
-{
-    $bloodgrouperror="Blood group is req";
-}
-else{
-    $bloodgroup=test_input($_POST["bloodgroup"]);
-}
-function test_input($data) {
-    $data = trim($data);
-    return $data;
-  }
- 
-    ?>
+    <head>
+        <title>Participate Registration</title>
+        <style>
+            body{
+                font-family: Arial, sans-serif;
+                background-color: #f0f8ff;
+                padding: 30px;
+            }
+            h2{
+                text-align: center;
+                color: #003366;
+            }
+            form, .box{
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                width: 400px;
+                margin: 0 auto;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;               
+            }
+
+            input, button{
+                width: 100%;
+                padding: 10px;
+                margin: 8px 0;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+            button{
+                background-color: #003366;
+                color: white;
+                cursor: pointer;
+            }
+
+            button:hover{
+                background-color: #0055aa;
+            }
+
+            #success{
+                margin-top: 20px;
+                text-align: center;
+                font-size: 16px;
+                color: green;
+            }
+
+            #error{
+                margin-top: 20px;
+                text-align: center;
+                font-size: 16px;
+                color: red;
+            }
+
+            .activity-item{
+                background: #eef4ff;
+                padding: 8px;
+                margin-top: 8px;
+                border-radius: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .remove-btn {
+                background-color: red;
+                border: none;
+                color: white;
+                padding: 5px 8px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Participate Registration</h2>
+
+        <form onsubmit="return registerUser()">
+            <label>Full Name:</label>
+            <input type="text" id="fullname"/>
+
+            <label>Email:</label>
+            <input type="email" id="email"/>
+
+            <label>Phone Number:</label>
+            <input type="text" id="phone"/>
+
+            <label>Password:</label>
+            <input type="password" id="password"/>
+
+            <label>Confirm Password:</label>
+            <input type="password" id="confirmPassword"/>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <div id="success"></div>
+        <div id="error"></div>
+
+        <h2>Activity selection</h2>
+
+        <div class="box">
+            <label>Activity Name:</label>
+            <input type="text" id="activityName"/>
+
+            <button onclick="addActivity()">Add Activity</button>
+
+            <div id="activityList"></div>
+        </div>
+
+        <script>
+            function registerUser(){
+                var name = document.getElementById('fullname').value.trim();
+                var email = document.getElementById('email').value.trim();
+                var phone = document.getElementById('phone').value.trim();
+                var pass = document.getElementById('password').value;
+                var confirm = document.getElementById('confirmPassword').value;
+
+                var errorDiv = document.getElementById('error');
+                var successDiv = document.getElementById('success');
+
+                errorDiv.innerHTML = '';
+                successDiv.innerHTML = '';
+
+                if(name === '' || email === '' || phone === '' || pass === '' || confirm === ''){
+                    errorDiv.innerHTML = 'Please fill in all fields.';
+                    return false;
+                }
+
+                if(!email.includes('@')){
+                    errorDiv.innerHTML = 'Please enter a valid email address.';
+                    return false;
+                }
+
+                if(!/^[0-9]+$/.test(phone)){
+                    errorDiv.innerHTML = 'Phone number must contain digits only.';
+                    return false;
+                }
+
+                if(pass !== confirm){
+                    errorDiv.innerHTML = 'Passwords do not match.';
+                    return false;
+                }
+
+                successDiv.innerHTML = `<strong>'Registration successful!';</strong><br><br>
+                Name:${name}<br>
+                Email:${email}<br>
+                Phone:${phone}`;
+                return false;
+            }    
+            function addActivity(){
+                var activityName = document.getElementById('activityName').value.trim();
+                if(activityName === '')return;
+                
+                var list = document.getElementById("activityList");
+
+                var div = document.createElement("div");
+                div.className = "activity-item";
+
+                div.innerHTML = `${activityName}<button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>`;
+                list.appendChild(div);
+
+                document.getElementById('activityName').value = "";
+            }
+        </script>
+    </body>
+</html>
